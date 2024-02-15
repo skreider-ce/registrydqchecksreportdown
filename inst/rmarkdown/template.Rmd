@@ -6,7 +6,9 @@ output:
     self_contained: true
     keep_md: true
     toc: true
-    toc_float: true
+    toc_float:
+      collapsed: false
+    toc_depth: 2
 params:
   checkDataset: NULL
 ---
@@ -14,18 +16,27 @@ params:
 # Runner Summary
 
 [Insert runner summary information here]
-```{r}
-print(params$checkDataset)
+```{r echo = FALSE}
+print(params$checkDataset$runnerSummary)
 ```
 
 # Overall Check Summary
 
 [Insert overall check summary information here]
 
-# Dataset Specific Summary
 
-[Insert dataset specific summary information here]
+```{r generate_section_headings, echo = FALSE}
+datasetNames <- names(params$checkDataset$criticalChecks)
+for(datasetName in datasetNames){
+cat(paste0("# ", datasetName, "\n"))
 
-# Dataset Specific Checks
+  cat(paste0("## Summary", "\n"))
 
-[Insert dataset specific checks here]
+    
+  cat(paste0("## Critical Checks", "\n"))
+    print(params$checkDataset$criticalChecks[datasetName])
+      
+  cat(paste0("## Non-Critical Checks", "\n"))
+    print(params$checkDataset$nonCriticalChecks[datasetName])
+}
+```
