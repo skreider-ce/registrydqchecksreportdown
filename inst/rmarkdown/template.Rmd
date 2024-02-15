@@ -2,9 +2,13 @@
 title: "Data Quality Report"
 author: "Your Name"
 output:
-  bookdown::html_document2:
+  html_document:
+    self_contained: true
+    keep_md: true
     toc: true
     toc_float: true
+  output_dir: "C:/Users/ScottKreider/Documents/scrap/report"
+  output_file: "report.html"
 ---
 
 # Runner Summary
