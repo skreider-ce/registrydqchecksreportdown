@@ -12,29 +12,31 @@ printCriticalCheck <- function(.criticalCheckId, .criticalCheckResults){
 
   switch (.criticalCheckId,
     "criticalCheck1" = {
-      print(NULL)
+      print("  \n")
     },
     "criticalCheck2" = {
-      print(NULL)
+      print("  \n")
     },
     "criticalCheck3" = {
-      print(NULL)
+      print("  \n")
     },
     "criticalCheck4" = {
-      print(NULL)
+      print("  \n")
     },
     "criticalCheck5" = {
-      print(NULL)
+      print("  \n")
     },
     "criticalCheck6" = {
-      print(.criticalCheckResults$inOldAndNotInNew)
-      # reactable::reactable(.criticalCheckResults[[.criticalCheckId]]$inOldAndNotInNew)
+      if(nrow(.criticalCheckResults$inOldAndNotInNew) > 0){
+        reactable::reactable(.criticalCheckResults$inOldAndNotInNew)
+      }
+      print("  \n")
     },
     "criticalCheck7" = {
-      print(NULL)
+      print("  \n")
     },
     "criticalCheck8" = {
-      print(NULL)
+      print("  \n")
     }
   )
 }
