@@ -10,7 +10,8 @@
 generateReport <- function(.inputDatasetUrl, .reportOutputUrl){
   .checkDataset <- readRDS(glue::glue("{.inputDatasetUrl}"))
 
-  bookdown::render_book("./inst/rmarkdown/template.Rmd"
+  bookdown::render_book("./inst/rmarkdown"
                         ,output_format = "bookdown::html_document2"
-                        ,output_dir = .reportOutputUrl)
+                        ,output_dir = .reportOutputUrl
+                        ,params = list(output_dir = .reportOutputUrl))
 }

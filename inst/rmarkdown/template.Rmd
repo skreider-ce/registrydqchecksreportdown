@@ -5,6 +5,7 @@ output:
   bookdown::html_document2:
     toc: true
     toc_float: true
+    output_dir: "`r output_dir`"
 ---
 
 # Runner Summary
