@@ -11,7 +11,7 @@
 generateReport <- function(.inputDatasetUrl, .reportOutputUrl, .fileName){
   .checkDataset <- readRDS(glue::glue("{.inputDatasetUrl}"))
 
-  rmarkdown::render("./inst/rmarkdown/template.Rmd"
+  rmarkdown::render(system.file("rmd", "template.Rmd", package = "registrydqchecksreportdown")
                     ,output_dir = .reportOutputUrl
                     ,output_file = glue::glue("{.fileName}.html")
                     ,params = list(checkDataset = .checkDataset))
