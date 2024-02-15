@@ -4,12 +4,14 @@
 \alias{generateReport}
 \title{generateReport}
 \usage{
-generateReport(.inputDatasetUrl, .reportOutputUrl)
+generateReport(.inputDatasetUrl, .reportOutputUrl, .fileName)
 }
 \arguments{
 \item{.inputDatasetUrl}{direct link to the .RDS file that has the check report output}
 
 \item{.reportOutputUrl}{link to the folder where the report will be stored}
+
+\item{.fileName}{name of the output file}
 }
 \description{
 generateReport
