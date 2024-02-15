@@ -9,6 +9,7 @@ output:
     toc_float:
       collapsed: false
     toc_depth: 2
+sansfont: Calibri Light
 params:
   checkDataset: NULL
 ---
@@ -25,18 +26,20 @@ print(params$checkDataset$runnerSummary)
 [Insert overall check summary information here]
 
 
-```{r generate_section_headings, echo = FALSE}
+```{r generate_section_headings, results = "asis", echo = FALSE}
+library(registrydqchecksreportdown)
+
 datasetNames <- names(params$checkDataset$criticalChecks)
 for(datasetName in datasetNames){
-cat(paste0("# ", datasetName, "\n"))
+cat(paste0("# ", datasetName, " \n"))
 
-  cat(paste0("## Summary", "\n"))
+  cat(paste0("## Summary", " \n"))
 
     
   cat(paste0("## Critical Checks", "\n"))
-    print(params$checkDataset$criticalChecks[datasetName])
-      
-  cat(paste0("## Non-Critical Checks", "\n"))
-    print(params$checkDataset$nonCriticalChecks[datasetName])
+    printCriticalChecks(params$checkDataset$criticalChecks[[datasetName]])
+
+  cat(paste0("## Non-Critical Checks", " \n"))
+    print(params$checkDataset$nonCriticalChecks[[datasetName]])
 }
 ```
