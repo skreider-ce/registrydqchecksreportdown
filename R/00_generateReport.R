@@ -6,9 +6,11 @@
 #' @export
 #'
 #' @importFrom glue glue
-#' @importFrom bookdown render_book
+#' @importFrom rmarkdown render
 generateReport <- function(.inputDatasetUrl, .reportOutputUrl){
   .checkDataset <- readRDS(glue::glue("{.inputDatasetUrl}"))
 
-  rmarkdown::render("./inst/rmarkdown/template.Rmd")
+  rmarkdown::render("./inst/rmarkdown/template.Rmd"
+                    ,output_dir = .reportOutputUrl
+                    ,params = list(checkDataset = .checkDataset))
 }

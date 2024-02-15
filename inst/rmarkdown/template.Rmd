@@ -1,18 +1,22 @@
 ---
 title: "Data Quality Report"
-author: "Your Name"
+author: "Scott Kreider"
 output:
   html_document:
     self_contained: true
     keep_md: true
     toc: true
     toc_float: true
-  output_file: "C:/Users/ScottKreider/Documents/scrap/report/report.html"
+params:
+  checkDataset: NULL
 ---
 
 # Runner Summary
 
 [Insert runner summary information here]
+```{r}
+print(params$checkDataset)
+```
 
 # Overall Check Summary
 
