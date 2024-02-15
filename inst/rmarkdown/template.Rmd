@@ -7,8 +7,7 @@ output:
     keep_md: true
     toc: true
     toc_float: true
-  output_dir: "C:/Users/ScottKreider/Documents/scrap/report"
-  output_file: "report.html"
+  output_file: "C:/Users/ScottKreider/Documents/scrap/report/report.html"
 ---
 
 # Runner Summary
