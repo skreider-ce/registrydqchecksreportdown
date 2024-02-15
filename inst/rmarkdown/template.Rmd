@@ -1,0 +1,24 @@
+---
+title: "Data Quality Report"
+author: "Your Name"
+output:
+  bookdown::html_document2:
+    toc: true
+    toc_float: true
+---
+
+# Runner Summary
+
+[Insert runner summary information here]
+
+# Overall Check Summary
+
+[Insert overall check summary information here]
+
+# Dataset Specific Summary
+
+[Insert dataset specific summary information here]
+
+# Dataset Specific Checks
+
+[Insert dataset specific checks here]
