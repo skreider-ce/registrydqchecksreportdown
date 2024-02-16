@@ -24,6 +24,16 @@ print(params$checkDataset$runnerSummary)
 # Overall Check Summary
 
 [Insert overall check summary information here]
+```{r echo = FALSE}
+reactable::reactable(params$checkDataset$checkSummary$criticalCheckSummary)
+
+cat(paste0("  \n"))
+
+print(params$checkDataset$checkSummary$nonCriticalCheckSummary)
+
+cat(paste0("  \n"))
+
+```
 
 
 ```{r generate_section_headings, results = "asis", echo = FALSE}
@@ -31,15 +41,16 @@ library(registrydqchecksreportdown)
 
 datasetNames <- names(params$checkDataset$criticalChecks)
 for(datasetName in datasetNames){
-cat(paste0("# ", datasetName, " \n"))
+cat(paste0("  \n"))
+cat(paste0("# ", datasetName, "  \n"))
 
-  cat(paste0("## Summary", " \n"))
+  cat(paste0("## Summary", "  \n"))
 
     
-  cat(paste0("## Critical Checks", "\n"))
+  cat(paste0("## Critical Checks", "  \n"))
     printCriticalChecks(params$checkDataset$criticalChecks[[datasetName]])
 
-  cat(paste0("## Non-Critical Checks", " \n"))
+  cat(paste0("## Non-Critical Checks", "  \n"))
     print(params$checkDataset$nonCriticalChecks[[datasetName]])
 }
 ```
