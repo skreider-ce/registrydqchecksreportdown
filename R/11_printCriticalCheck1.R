@@ -5,6 +5,7 @@
 #'
 #' @importFrom reactable reactable
 printCriticalCheck <- function(.criticalCheckId, .criticalCheckResults){
+  # Create header and print critical checks to report
   cat(paste0("### ", .criticalCheckId, " - ", .criticalCheckResults$checkTitle , "  \n"))
   cat(paste0("Description: ", .criticalCheckResults$checkDescription, "  \n"))
   cat(paste0("Pass: ", .criticalCheckResults$pass, "  \n"))
