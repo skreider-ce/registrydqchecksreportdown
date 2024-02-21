@@ -13,3 +13,5 @@ Imports:
     reactable
     ,glue
     ,rmarkdown
+    ,DT
+    ,dplyr
