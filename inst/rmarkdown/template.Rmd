@@ -16,41 +16,64 @@ params:
 
 # Runner Summary
 
-[Insert runner summary information here]
-```{r echo = FALSE}
-print(params$checkDataset$runnerSummary)
+```{r echo = FALSE, results = "asis"}
+cat(paste0("**Registry:** ",params$checkDataset$runnerSummary$registry,"  \n"))
+cat(paste0("**Timestamp:** ",params$checkDataset$runnerSummary$timestamp,"  \n"))
+cat(paste0("**User:** ",params$checkDataset$runnerSummary$user,"  \n"))
+cat(paste0("**Output location:** ",params$checkDataset$runnerSummary$folderLoc,"  \n"))
+cat(paste0("**Data pull date:** ",params$checkDataset$runnerSummary$pullDate,"  \n"))
 ```
 
 # Overall Check Summary
 
-[Insert overall check summary information here]
-```{r echo = FALSE}
-reactable::reactable(params$checkDataset$checkSummary$criticalCheckSummary)
+Critical Check Summary
+```{r echo = FALSE, results = "asis"}
+summaryToPrint <- params$checkDataset$checkSummary$criticalCheckSummary
+DT::datatable(summaryToPrint)
 
-cat(paste0("  \n"))
+cat(paste0("  \n\n"))
+```
 
-print(params$checkDataset$checkSummary$nonCriticalCheckSummary)
+Noncritical Check Summary
+```{r echo = FALSE, results = "asis"}
+DT::datatable(params$checkDataset$checkSummary$nonCriticalCheckSummary)
 
-cat(paste0("  \n"))
+cat(paste0("  \n\n"))
 
 ```
 
 
-```{r generate_section_headings, results = "asis", echo = FALSE}
+```{r echo = FALSE, results = "asis"}
 library(registrydqchecksreportdown)
 
 datasetNames <- names(params$checkDataset$criticalChecks)
 for(datasetName in datasetNames){
-cat(paste0("  \n"))
-cat(paste0("# ", datasetName, "  \n"))
+cat(paste0("  \n\n"))
+cat(paste0("# ", datasetName, "  \n\n"))
 
-  cat(paste0("## Summary", "  \n"))
+  cat(paste0("## Summary", "  \n\n"))
+  cat(paste0("  \n\n"))
+  
+  .summaryToPrint <- params$checkDataset$checkSummary$criticalCheckSummary |>
+    dplyr::filter(dataset == datasetName)
+  # cat(paste0(.summaryToPrint))
+  print(knitr::kable(.summaryToPrint))
+  # DT::datatable(.summaryToPrint)
+  
+  cat(paste0("  \n\n"))
+  
+  .summaryToPrint <- params$checkDataset$checkSummary$nonCriticalCheckSummary |>
+    dplyr::filter(dataset == datasetName)
+  # cat(paste0(.summaryToPrint))
+  print(knitr::kable(.summaryToPrint))
+  # DT::datatable(.summaryToPrint)
 
-    
-  cat(paste0("## Critical Checks", "  \n"))
+  cat(paste0("  \n\n"))
+
+  cat(paste0("## Critical Checks", "  \n\n"))
     printCriticalChecks(params$checkDataset$criticalChecks[[datasetName]])
 
-  cat(paste0("## Non-Critical Checks", "  \n"))
+  cat(paste0("## Non-Critical Checks", "  \n\n"))
     print(params$checkDataset$nonCriticalChecks[[datasetName]])
 }
 ```
