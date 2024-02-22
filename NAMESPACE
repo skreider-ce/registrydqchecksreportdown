@@ -3,4 +3,5 @@
 export(generateReport)
 importFrom(glue,glue)
 importFrom(reactable,reactable)
+importFrom(rmarkdown,paged_table)
 importFrom(rmarkdown,render)

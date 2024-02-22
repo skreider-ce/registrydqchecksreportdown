@@ -43,7 +43,7 @@ cat(paste0("  \n\n"))
 ```
 
 
-```{r echo = FALSE, results = "asis"}
+```{r echo = FALSE, results = "asis", include = TRUE}
 library(registrydqchecksreportdown)
 
 datasetNames <- names(params$checkDataset$criticalChecks)
@@ -56,24 +56,52 @@ cat(paste0("# ", datasetName, "  \n\n"))
   
   .summaryToPrint <- params$checkDataset$checkSummary$criticalCheckSummary |>
     dplyr::filter(dataset == datasetName)
-  # cat(paste0(.summaryToPrint))
   print(knitr::kable(.summaryToPrint))
-  # DT::datatable(.summaryToPrint)
-  
+
   cat(paste0("  \n\n"))
   
   .summaryToPrint <- params$checkDataset$checkSummary$nonCriticalCheckSummary |>
     dplyr::filter(dataset == datasetName)
-  # cat(paste0(.summaryToPrint))
   print(knitr::kable(.summaryToPrint))
-  # DT::datatable(.summaryToPrint)
 
   cat(paste0("  \n\n"))
+  cat(paste0("******  \n"))
 
   cat(paste0("## Critical Checks", "  \n\n"))
     printCriticalChecks(params$checkDataset$criticalChecks[[datasetName]])
 
+  cat(paste0("******  \n"))
+    
   cat(paste0("## Non-Critical Checks", "  \n\n"))
-    print(params$checkDataset$nonCriticalChecks[[datasetName]])
+      cat("\n")
+      for(.noncriticalCheckId in names(params$checkDataset$nonCriticalChecks[[datasetName]]$nPctList)){
+        cat(paste0("******  \n"))
+        
+        cat("\n")
+    
+        cat(paste0("###  "
+                   ,.noncriticalCheckId
+                   ," - ", params$checkDataset$nonCriticalChecks[[datasetName]]$nPctList[[.noncriticalCheckId]]$checkTitle
+                   , "  \n"))
+        cat(paste0("Description: "
+                   ,params$checkDataset$nonCriticalChecks[[datasetName]]$nPctList[[.noncriticalCheckId]]$checkDescription
+                   ,"  \n"))
+        cat(paste0("Pass: "
+                   ,params$checkDataset$nonCriticalChecks[[datasetName]]$nPctList[[.noncriticalCheckId]]$pass
+                   ,"  \n"))
+        cat(paste0("Number Failed: "
+                   ,params$checkDataset$nonCriticalChecks[[datasetName]]$nPctList[[.noncriticalCheckId]]$values$n
+                   ,"  \n"))
+        cat("\n")
+    
+        if(params$checkDataset$nonCriticalChecks[[datasetName]]$nPctList[[.noncriticalCheckId]]$values$n > 0){
+          print(knitr::kable(head(params$checkDataset$nonCriticalChecks[[datasetName]]$nPctList[[.noncriticalCheckId]]$listing)))
+        }
+
+        if(params$checkDataset$nonCriticalChecks[[datasetName]]$nPctList[[.noncriticalCheckId]]$values$n > 6){
+          cat(paste0("      *More than 6 observations - see listing output for full list of observations*  \n"))
+        }
+        cat("\n")
+      }
 }
 ```
