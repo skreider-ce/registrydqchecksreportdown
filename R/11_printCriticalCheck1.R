@@ -4,6 +4,7 @@
 #' @param .criticalCheckResults The listing output to be printed
 #'
 #' @importFrom reactable reactable
+#' @importFrom rmarkdown paged_table
 printCriticalCheck <- function(.criticalCheckId, .criticalCheckResults){
   # Create header and print critical checks to report
   cat(paste0("### ", .criticalCheckId, " - ", .criticalCheckResults$checkTitle , "  \n"))
@@ -13,30 +14,59 @@ printCriticalCheck <- function(.criticalCheckId, .criticalCheckResults){
 
   switch (.criticalCheckId,
     "criticalCheck1" = {
+      cat(paste0("Number Failed: ", .criticalCheckResults$nDuplicateRows, "  \n"))
+      if(.criticalCheckResults$nDuplicateRows > 0){
+        print(knitr::kable(.criticalCheckResults$listOfDuplicateRows))
+      }
       cat(paste0("  \n"))
     },
     "criticalCheck2" = {
+      cat(paste0("Number Failed: ", .criticalCheckResults$nOmittedVars, "  \n"))
+      if(.criticalCheckResults$nOmittedVars > 0){
+        print(knitr::kable(.criticalCheckResults$omittedVars))
+      }
       cat(paste0("  \n"))
     },
     "criticalCheck3" = {
+      cat(paste0("Number Failed: ", .criticalCheckResults$nExtraVars, "  \n"))
+      if(.criticalCheckResults$nExtraVars > 0){
+        print(knitr::kable(.criticalCheckResults$extraVars))
+      }
       cat(paste0("  \n"))
     },
     "criticalCheck4" = {
+      cat(paste0("Number Failed: ", .criticalCheckResults$nMissingVariableLabels, "  \n"))
+      if(.criticalCheckResults$nMissingVariableLabels > 0){
+        print(knitr::kable(.criticalCheckResults$listOfVarsWithMissingLabels))
+      }
       cat(paste0("  \n"))
     },
     "criticalCheck5" = {
+      cat(paste0("Number Added Rows: ", .criticalCheckResults$nAddedRows, "  \n"))
+      cat(paste0("Number of Old Rows: ", .criticalCheckResults$nOldRows, "  \n"))
+      cat(paste0("Proportion of Row Increase: ", .criticalCheckResults$propRowIncrease, "  \n"))
       cat(paste0("  \n"))
     },
     "criticalCheck6" = {
       if(nrow(.criticalCheckResults$inOldAndNotInNew) > 0){
-        reactable::reactable(.criticalCheckResults$inOldAndNotInNew)
+        print(knitr::kable(.criticalCheckResults$inOldAndNotInNew))
       }
       cat(paste0("  \n"))
     },
     "criticalCheck7" = {
+      if(!is.null(.criticalCheckResults)){
+        if(nrow(.criticalCheckResults$essentialVariablesMissingness) > 0){
+          print(knitr::kable(.criticalCheckResults$essentialVariablesMissingness))
+        }
+      }
       cat(paste0("  \n"))
     },
     "criticalCheck8" = {
+      if(!is.null(.criticalCheckResults)){
+        if(nrow(.criticalCheckResults$essentialVariablesMissingness) > 0){
+          print(knitr::kable(.criticalCheckResults$essentialVariablesMissingness))
+        }
+      }
       cat(paste0("  \n"))
     }
   )
