@@ -23,21 +23,21 @@ printCriticalCheck <- function(.criticalCheckId, .criticalCheckResults){
     "criticalCheck2" = {
       cat(paste0("Number Failed: ", .criticalCheckResults$nOmittedVars, "  \n"))
       if(.criticalCheckResults$nOmittedVars > 0){
-        print(knitr::kable(.criticalCheckResults$omittedVars))
+        print(knitr::kable(.criticalCheckResults$omittedVars, col.names = "Removed Vars"))
       }
       cat(paste0("  \n"))
     },
     "criticalCheck3" = {
       cat(paste0("Number Failed: ", .criticalCheckResults$nExtraVars, "  \n"))
       if(.criticalCheckResults$nExtraVars > 0){
-        print(knitr::kable(.criticalCheckResults$extraVars))
+        print(knitr::kable(.criticalCheckResults$extraVars, col.names = "Added Vars"))
       }
       cat(paste0("  \n"))
     },
     "criticalCheck4" = {
       cat(paste0("Number Failed: ", .criticalCheckResults$nMissingVariableLabels, "  \n"))
       if(.criticalCheckResults$nMissingVariableLabels > 0){
-        print(knitr::kable(.criticalCheckResults$listOfVarsWithMissingLabels))
+        print(knitr::kable(.criticalCheckResults$listOfVarsWithMissingLabels, col.names = "Vars wout Labels"))
       }
       cat(paste0("  \n"))
     },
