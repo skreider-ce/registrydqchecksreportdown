@@ -64,7 +64,9 @@ printCriticalCheck <- function(.criticalCheckId, .criticalCheckResults){
     "criticalCheck8" = {
       if(!is.null(.criticalCheckResults)){
         if(nrow(.criticalCheckResults$essentialVariablesMissingness) > 0){
-          print(knitr::kable(.criticalCheckResults$essentialVariablesMissingness))
+          .dsToPrint <- .criticalCheckResults$essentialVariablesMissingness |>
+            dplyr::select(varName, nRows, nMissing, propMissing, propMissingComp, acceptableMissingness, skipLogic)
+          print(knitr::kable(.dsToPrint))
         }
       }
       cat(paste0("  \n"))

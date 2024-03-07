@@ -73,6 +73,41 @@ cat(paste0("# ", datasetName, "  \n\n"))
   cat(paste0("******  \n"))
     
   cat(paste0("## Non-Critical Checks", "  \n\n"))
+        cat("\n")
+      for(.noncriticalCheckId in names(params$checkDataset$nonCriticalChecks[[datasetName]]$codebookChecks)){
+        cat(paste0("******  \n"))
+        
+        cat("\n")
+    
+        cat(paste0("###  "
+                   ,.noncriticalCheckId
+                   ," - ", params$checkDataset$nonCriticalChecks[[datasetName]]$codebookChecks[[.noncriticalCheckId]]$checkTitle
+                   , "  \n"))
+        cat(paste0("Description: "
+                   ,params$checkDataset$nonCriticalChecks[[datasetName]]$codebookChecks[[.noncriticalCheckId]]$checkDescription
+                   ,"  \n"))
+        cat(paste0("Pass: "
+                   ,params$checkDataset$nonCriticalChecks[[datasetName]]$codebookChecks[[.noncriticalCheckId]]$pass
+                   ,"  \n"))
+        cat(paste0("Number Failed: "
+                   ,params$checkDataset$nonCriticalChecks[[datasetName]]$codebookChecks[[.noncriticalCheckId]]$values$n
+                   ,"  \n"))
+        cat("\n")
+
+        if(!(params$checkDataset$nonCriticalChecks[[datasetName]]$codebookChecks[[.noncriticalCheckId]]$values$n %in% c(0, NULL))){
+          print(knitr::kable(head(params$checkDataset$nonCriticalChecks[[datasetName]]$codebookChecks[[.noncriticalCheckId]]$listing)))
+          
+          if(params$checkDataset$nonCriticalChecks[[datasetName]]$codebookChecks[[.noncriticalCheckId]]$values$n > 6){
+            cat(paste0("      *More than 6 observations - see listing output for full list of observations*  \n"))
+          }
+        }
+
+        cat("\n")
+      }
+
+        
+        
+        
       cat("\n")
       for(.noncriticalCheckId in names(params$checkDataset$nonCriticalChecks[[datasetName]]$nPctList)){
         cat(paste0("******  \n"))
