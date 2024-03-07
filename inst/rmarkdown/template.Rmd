@@ -93,7 +93,7 @@ cat(paste0("# ", datasetName, "  \n\n"))
                    ,params$checkDataset$nonCriticalChecks[[datasetName]]$codebookChecks[[.noncriticalCheckId]]$values$n
                    ,"  \n"))
         cat("\n")
-    
+
         if(!(params$checkDataset$nonCriticalChecks[[datasetName]]$codebookChecks[[.noncriticalCheckId]]$values$n %in% c(0, NULL))){
           print(knitr::kable(head(params$checkDataset$nonCriticalChecks[[datasetName]]$codebookChecks[[.noncriticalCheckId]]$listing)))
           
