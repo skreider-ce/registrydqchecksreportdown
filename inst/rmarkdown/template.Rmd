@@ -26,7 +26,8 @@ cat(paste0("**Data pull date:** ",params$checkDataset$runnerSummary$pullDate,"  
 
 # Overall Check Summary
 
-Critical Check Summary
+## Critical Check Summary
+
 ```{r echo = FALSE, results = "asis"}
 summaryToPrint <- params$checkDataset$checkSummary$criticalCheckSummary
 DT::datatable(summaryToPrint)
@@ -34,14 +35,14 @@ DT::datatable(summaryToPrint)
 cat(paste0("  \n\n"))
 ```
 
-Noncritical Check Summary
+## Noncritical Check Summary
+
 ```{r echo = FALSE, results = "asis"}
 DT::datatable(params$checkDataset$checkSummary$nonCriticalCheckSummary)
 
 cat(paste0("  \n\n"))
 
 ```
-
 
 ```{r echo = FALSE, results = "asis", include = TRUE}
 library(registrydqchecksreportdown)
@@ -78,6 +79,16 @@ cat(paste0("# ", datasetName, "  \n\n"))
         cat(paste0("******  \n"))
         
         cat("\n")
+        
+        if(.noncriticalCheckId == "nc3") {
+          .dsToPrint <- params$checkDataset$nonCriticalChecks[[datasetName]]$codebookChecks[[.noncriticalCheckId]]$listing |>
+            dplyr::select(varName, nRows, nMissing, propMissing, acceptableMissingness, skipLogic)
+        } else if (.noncriticalCheckId == "nc4") {
+          .dsToPrint <- params$checkDataset$nonCriticalChecks[[datasetName]]$codebookChecks[[.noncriticalCheckId]]$listing |>
+            dplyr::select(varName, nRows, nMissing, propMissing, propMissingComp, acceptableMissingness, skipLogic)
+        } else {
+          .dsToPrint <- params$checkDataset$nonCriticalChecks[[datasetName]]$codebookChecks[[.noncriticalCheckId]]$listing
+        }
     
         cat(paste0("###  "
                    ,.noncriticalCheckId
@@ -95,7 +106,7 @@ cat(paste0("# ", datasetName, "  \n\n"))
         cat("\n")
 
         if(!(params$checkDataset$nonCriticalChecks[[datasetName]]$codebookChecks[[.noncriticalCheckId]]$values$n %in% c(0, NULL))){
-          print(knitr::kable(head(params$checkDataset$nonCriticalChecks[[datasetName]]$codebookChecks[[.noncriticalCheckId]]$listing)))
+          print(knitr::kable(head(.dsToPrint)))
           
           if(params$checkDataset$nonCriticalChecks[[datasetName]]$codebookChecks[[.noncriticalCheckId]]$values$n > 6){
             cat(paste0("      *More than 6 observations - see listing output for full list of observations*  \n"))
