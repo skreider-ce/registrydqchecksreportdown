@@ -1,6 +1,5 @@
 ---
 title: "Data Quality Report"
-author: "Scott Kreider"
 output:
   html_document:
     self_contained: true
