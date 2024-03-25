@@ -148,5 +148,27 @@ cat(paste0("# ", datasetName, "  \n\n"))
         }
         cat("\n")
       }
+      
+      
+            cat("\n")
+      for(.noncriticalCheckId in names(params$checkDataset$nonCriticalChecks[[datasetName]]$summaryStats)){
+        cat(paste0("******  \n"))
+        
+        cat("\n")
+    
+        cat(paste0("###  "
+                   ,.noncriticalCheckId
+                   ," - ", params$checkDataset$nonCriticalChecks[[datasetName]]$summaryStats[[.noncriticalCheckId]]$checkTitle
+                   , "  \n"))
+        cat(paste0("Description: "
+                   ,params$checkDataset$nonCriticalChecks[[datasetName]]$summaryStats[[.noncriticalCheckId]]$checkDescription
+                   ,"  \n"))
+        cat("\n")
+    
+        if(nrow(params$checkDataset$nonCriticalChecks[[datasetName]]$summaryStats[[.noncriticalCheckId]]$listing) > 0){
+          print(knitr::kable(params$checkDataset$nonCriticalChecks[[datasetName]]$summaryStats[[.noncriticalCheckId]]$listing))
+        }
+        cat("\n")
+      }
 }
 ```
