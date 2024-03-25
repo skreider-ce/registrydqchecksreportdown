@@ -29,7 +29,11 @@ cat(paste0("**Data pull date:** ",params$checkDataset$runnerSummary$pullDate,"  
 
 ```{r echo = FALSE, results = "asis"}
 summaryToPrint <- params$checkDataset$checkSummary$criticalCheckSummary
-DT::datatable(summaryToPrint)
+DT::datatable(summaryToPrint) |>
+  DT::formatStyle(
+    names(summaryToPrint)
+    ,backgroundColor = DT::styleEqual(c("Fail", "Pass"), c("#FF7F7F", "#D1FFBD"))
+  )
 
 cat(paste0("  \n\n"))
 ```
