@@ -45,10 +45,13 @@ printCriticalCheck <- function(.criticalCheckId, .criticalCheckResults){
     "criticalCheck5" = {
       cat(paste0("Number Added Rows: ", .criticalCheckResults$nAddedRows, "  \n"))
       cat(paste0("Number of Old Rows: ", .criticalCheckResults$nOldRows, "  \n"))
-      cat(paste0("Proportion of Row Increase: ", .criticalCheckResults$propRowIncrease, "  \n"))
+      cat(paste0("Percent of Row Increase: ", .criticalCheckResults$pctRowIncrease, "  \n"))
+      cat(paste0("Comparison Threshold: ", 100 * .criticalCheckResults$threshold, "  \n"))
       cat(paste0("  \n"))
     },
     "criticalCheck6" = {
+      cat(paste0("Number of Removed Rows: ", .criticalCheckResults$nRemovedRows, "  \n"))
+      cat(paste0("Comparison Threshold: ", .criticalCheckResults$threshold, "  \n"))
       if(nrow(.criticalCheckResults$inOldAndNotInNew) > 0){
         print(knitr::kable(.criticalCheckResults$inOldAndNotInNew))
       }
