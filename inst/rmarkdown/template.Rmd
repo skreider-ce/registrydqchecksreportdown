@@ -95,7 +95,9 @@ cat(paste0("# ", datasetName, "  \n\n"))
     
         cat(paste0("###  Results of Non-Critical Check "
                    ,as.numeric(gsub("\\D", "", .noncriticalCheckId))
-                   ," - ", params$checkDataset$nonCriticalChecks[[datasetName]]$codebookChecks[[.noncriticalCheckId]]$checkTitle
+                   ," ("
+                   ,params$checkDataset$nonCriticalChecks[[datasetName]]$codebookChecks[[.noncriticalCheckId]]$checkId
+                   ,") - ", params$checkDataset$nonCriticalChecks[[datasetName]]$codebookChecks[[.noncriticalCheckId]]$checkTitle
                    , "  \n"))
         cat(paste0("Description: "
                    ,params$checkDataset$nonCriticalChecks[[datasetName]]$codebookChecks[[.noncriticalCheckId]]$checkDescription
