@@ -85,16 +85,16 @@ cat(paste0("# ", datasetName, "  \n\n"))
         
         if(.noncriticalCheckId == "nc3") {
           .dsToPrint <- params$checkDataset$nonCriticalChecks[[datasetName]]$codebookChecks[[.noncriticalCheckId]]$listing |>
-            dplyr::select(varName, nRows, nMissing, propMissing, acceptableMissingness, skipLogic)
+            dplyr::select(varName, nRows, nMissing, pctMissing, acceptableMissingness, skipLogic)
         } else if (.noncriticalCheckId == "nc4") {
           .dsToPrint <- params$checkDataset$nonCriticalChecks[[datasetName]]$codebookChecks[[.noncriticalCheckId]]$listing |>
-            dplyr::select(varName, nRows, nMissing, propMissing, propMissingComp, acceptableMissingness, skipLogic)
+            dplyr::select(varName, nRows, nMissing, pctMissing, pctMissingComp, acceptableMissingness, skipLogic)
         } else {
           .dsToPrint <- params$checkDataset$nonCriticalChecks[[datasetName]]$codebookChecks[[.noncriticalCheckId]]$listing
         }
     
-        cat(paste0("###  "
-                   ,.noncriticalCheckId
+        cat(paste0("###  Results of Non-Critical Check "
+                   ,as.numeric(gsub("\\D", "", .noncriticalCheckId))
                    ," - ", params$checkDataset$nonCriticalChecks[[datasetName]]$codebookChecks[[.noncriticalCheckId]]$checkTitle
                    , "  \n"))
         cat(paste0("Description: "
@@ -128,8 +128,8 @@ cat(paste0("# ", datasetName, "  \n\n"))
         
         cat("\n")
     
-        cat(paste0("###  "
-                   ,.noncriticalCheckId
+        cat(paste0("###  Results of Non-Critical Check "
+                   ,as.numeric(gsub("\\D", "", .noncriticalCheckId))
                    ," - ", params$checkDataset$nonCriticalChecks[[datasetName]]$nPctList[[.noncriticalCheckId]]$checkTitle
                    , "  \n"))
         cat(paste0("Description: "
@@ -160,8 +160,8 @@ cat(paste0("# ", datasetName, "  \n\n"))
         
         cat("\n")
     
-        cat(paste0("###  "
-                   ,.noncriticalCheckId
+        cat(paste0("###  Results of Non-Critical Check "
+                   ,as.numeric(gsub("\\D", "", .noncriticalCheckId))
                    ," - ", params$checkDataset$nonCriticalChecks[[datasetName]]$summaryStats[[.noncriticalCheckId]]$checkTitle
                    , "  \n"))
         cat(paste0("Description: "

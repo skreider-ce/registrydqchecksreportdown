@@ -7,7 +7,8 @@
 #' @importFrom rmarkdown paged_table
 printCriticalCheck <- function(.criticalCheckId, .criticalCheckResults){
   # Create header and print critical checks to report
-  cat(paste0("### ", .criticalCheckId, " - ", .criticalCheckResults$checkTitle , "  \n"))
+  # cat(paste0("### ", .criticalCheckId, " - ", .criticalCheckResults$checkTitle , "  \n"))
+  cat(paste0("### Results of Critical Check ", as.numeric(gsub("\\D", "", .criticalCheckId)), " - ", .criticalCheckResults$checkTitle , "  \n"))
   cat(paste0("Description: ", .criticalCheckResults$checkDescription, "  \n"))
   cat(paste0("Pass: ", .criticalCheckResults$pass, "  \n"))
   cat(paste0("  \n"))
@@ -65,7 +66,7 @@ printCriticalCheck <- function(.criticalCheckId, .criticalCheckResults){
       if(!is.null(.criticalCheckResults)){
         if(nrow(.criticalCheckResults$essentialVariablesMissingness) > 0){
           .dsToPrint <- .criticalCheckResults$essentialVariablesMissingness |>
-            dplyr::select(varName, nRows, nMissing, propMissing, propMissingComp, acceptableMissingness, skipLogic)
+            dplyr::select(varName, nRows, nMissing, pctMissing, pctMissingComp, acceptableMissingness, skipLogic)
           print(knitr::kable(.dsToPrint))
         }
       }
