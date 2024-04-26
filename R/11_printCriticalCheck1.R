@@ -74,6 +74,16 @@ printCriticalCheck <- function(.criticalCheckId, .criticalCheckResults){
         }
       }
       cat(paste0("  \n"))
+    },
+    "criticalCheck9" = {
+      if(!is.null(.criticalCheckResults)){
+        cat(paste0("Number Failed: ", .criticalCheckResults$nVariablesUnexpectedType, "  \n"))
+        if(nrow(.criticalCheckResults$listOfVarsWithUnexpectedType) > 0){
+          .dsToPrint <- .criticalCheckResults$listOfVarsWithUnexpectedType
+          print(knitr::kable(.dsToPrint))
+        }
+      }
+      cat(paste0("  \n"))
     }
   )
 }
