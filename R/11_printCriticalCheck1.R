@@ -69,7 +69,7 @@ printCriticalCheck <- function(.criticalCheckId, .criticalCheckResults){
       if(!is.null(.criticalCheckResults)){
         if(nrow(.criticalCheckResults$essentialVariablesMissingness) > 0){
           .dsToPrint <- .criticalCheckResults$essentialVariablesMissingness |>
-            dplyr::select(varName, nRowsThisMonth, nMissingThisMonth, pctMissingThisMonth, pctMissingLastMonth, acceptableMissingness, skipLogic)
+            dplyr::select(varName, nMissingThisMonth, nRowsThisMonth, pctMissingThisMonth, pctMissingLastMonth, acceptableMissingness, skipLogic)
           print(knitr::kable(.dsToPrint))
         }
       }
