@@ -27,9 +27,19 @@ cat(paste0("**Data pull date:** ",params$checkDataset$runnerSummary$pullDate,"  
 
 ## Critical Check Summary
 
+* cc1: Zero duplicates
+* cc2: Added variables
+* cc3: Removed variables
+* cc4: Zero unlabeled variables
+* cc5: Reasonable volume of new rows
+* cc6: Reasonable volume of disappearing rows
+* cc7: Item nonresponse for essential variables is not extreme
+* cc8: MoM (month over month) change in item nonresponse is reasonable for essential variables
+* cc9: Variables are of expected ‘type’
+
 ```{r echo = FALSE, results = "asis"}
 summaryToPrint <- params$checkDataset$checkSummary$criticalCheckSummary
-DT::datatable(summaryToPrint) |>
+DT::datatable(summaryToPrint, options = list(dom = 't')) |>
   DT::formatStyle(
     names(summaryToPrint)
     ,backgroundColor = DT::styleEqual(c("Fail", "Pass"), c("#FF7F7F", "#D1FFBD"))
@@ -41,7 +51,7 @@ cat(paste0("  \n\n"))
 ## Noncritical Check Summary
 
 ```{r echo = FALSE, results = "asis"}
-DT::datatable(params$checkDataset$checkSummary$nonCriticalCheckSummary)
+DT::datatable(params$checkDataset$checkSummary$nonCriticalCheckSummary, options = list(dom = 't'))
 
 cat(paste0("  \n\n"))
 
@@ -85,17 +95,19 @@ cat(paste0("# ", datasetName, "  \n\n"))
         
         if(.noncriticalCheckId == "nc3") {
           .dsToPrint <- params$checkDataset$nonCriticalChecks[[datasetName]]$codebookChecks[[.noncriticalCheckId]]$listing |>
-            dplyr::select(varName, nRows, nMissing, propMissing, acceptableMissingness, skipLogic)
+            dplyr::select(varName, nMissingThisMonth, nRowsThisMonth, pctMissingThisMonth, acceptableMissingness, skipLogic)
         } else if (.noncriticalCheckId == "nc4") {
           .dsToPrint <- params$checkDataset$nonCriticalChecks[[datasetName]]$codebookChecks[[.noncriticalCheckId]]$listing |>
-            dplyr::select(varName, nRows, nMissing, propMissing, propMissingComp, acceptableMissingness, skipLogic)
+            dplyr::select(varName, nMissingThisMonth, nRowsThisMonth, pctMissingThisMonth, pctMissingLastMonth, acceptableMissingness, skipLogic)
         } else {
           .dsToPrint <- params$checkDataset$nonCriticalChecks[[datasetName]]$codebookChecks[[.noncriticalCheckId]]$listing
         }
     
-        cat(paste0("###  "
-                   ,.noncriticalCheckId
-                   ," - ", params$checkDataset$nonCriticalChecks[[datasetName]]$codebookChecks[[.noncriticalCheckId]]$checkTitle
+        cat(paste0("###  Results of Non-Critical Check "
+                   ,as.numeric(gsub("\\D", "", .noncriticalCheckId))
+                   ," ("
+                   ,params$checkDataset$nonCriticalChecks[[datasetName]]$codebookChecks[[.noncriticalCheckId]]$checkId
+                   ,") - ", params$checkDataset$nonCriticalChecks[[datasetName]]$codebookChecks[[.noncriticalCheckId]]$checkTitle
                    , "  \n"))
         cat(paste0("Description: "
                    ,params$checkDataset$nonCriticalChecks[[datasetName]]$codebookChecks[[.noncriticalCheckId]]$checkDescription
@@ -128,8 +140,8 @@ cat(paste0("# ", datasetName, "  \n\n"))
         
         cat("\n")
     
-        cat(paste0("###  "
-                   ,.noncriticalCheckId
+        cat(paste0("###  Results of Non-Critical Check "
+                   ,as.numeric(gsub("\\D", "", .noncriticalCheckId))
                    ," - ", params$checkDataset$nonCriticalChecks[[datasetName]]$nPctList[[.noncriticalCheckId]]$checkTitle
                    , "  \n"))
         cat(paste0("Description: "
@@ -160,8 +172,8 @@ cat(paste0("# ", datasetName, "  \n\n"))
         
         cat("\n")
     
-        cat(paste0("###  "
-                   ,.noncriticalCheckId
+        cat(paste0("###  Results of Non-Critical Check "
+                   ,as.numeric(gsub("\\D", "", .noncriticalCheckId))
                    ," - ", params$checkDataset$nonCriticalChecks[[datasetName]]$summaryStats[[.noncriticalCheckId]]$checkTitle
                    , "  \n"))
         cat(paste0("Description: "

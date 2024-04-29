@@ -7,7 +7,8 @@
 #' @importFrom rmarkdown paged_table
 printCriticalCheck <- function(.criticalCheckId, .criticalCheckResults){
   # Create header and print critical checks to report
-  cat(paste0("### ", .criticalCheckId, " - ", .criticalCheckResults$checkTitle , "  \n"))
+  # cat(paste0("### ", .criticalCheckId, " - ", .criticalCheckResults$checkTitle , "  \n"))
+  cat(paste0("### Results of Critical Check ", as.numeric(gsub("\\D", "", .criticalCheckId)), " - ", .criticalCheckResults$checkTitle , "  \n"))
   cat(paste0("Description: ", .criticalCheckResults$checkDescription, "  \n"))
   cat(paste0("Pass: ", .criticalCheckResults$pass, "  \n"))
   cat(paste0("  \n"))
@@ -44,10 +45,13 @@ printCriticalCheck <- function(.criticalCheckId, .criticalCheckResults){
     "criticalCheck5" = {
       cat(paste0("Number Added Rows: ", .criticalCheckResults$nAddedRows, "  \n"))
       cat(paste0("Number of Old Rows: ", .criticalCheckResults$nOldRows, "  \n"))
-      cat(paste0("Proportion of Row Increase: ", .criticalCheckResults$propRowIncrease, "  \n"))
+      cat(paste0("Percent of Row Increase: ", .criticalCheckResults$pctRowIncrease, "  \n"))
+      cat(paste0("Comparison Threshold: ", 100 * .criticalCheckResults$threshold, "  \n"))
       cat(paste0("  \n"))
     },
     "criticalCheck6" = {
+      cat(paste0("Number of Removed Rows: ", .criticalCheckResults$nRemovedRows, "  \n"))
+      cat(paste0("Comparison Threshold: ", .criticalCheckResults$threshold, "  \n"))
       if(nrow(.criticalCheckResults$inOldAndNotInNew) > 0){
         print(knitr::kable(.criticalCheckResults$inOldAndNotInNew))
       }
@@ -65,7 +69,17 @@ printCriticalCheck <- function(.criticalCheckId, .criticalCheckResults){
       if(!is.null(.criticalCheckResults)){
         if(nrow(.criticalCheckResults$essentialVariablesMissingness) > 0){
           .dsToPrint <- .criticalCheckResults$essentialVariablesMissingness |>
-            dplyr::select(varName, nRows, nMissing, propMissing, propMissingComp, acceptableMissingness, skipLogic)
+            dplyr::select(varName, nMissingThisMonth, nRowsThisMonth, pctMissingThisMonth, pctMissingLastMonth, acceptableMissingness, skipLogic)
+          print(knitr::kable(.dsToPrint))
+        }
+      }
+      cat(paste0("  \n"))
+    },
+    "criticalCheck9" = {
+      if(!is.null(.criticalCheckResults)){
+        cat(paste0("Number Failed: ", .criticalCheckResults$nVariablesUnexpectedType, "  \n"))
+        if(nrow(.criticalCheckResults$listOfVarsWithUnexpectedType) > 0){
+          .dsToPrint <- .criticalCheckResults$listOfVarsWithUnexpectedType
           print(knitr::kable(.dsToPrint))
         }
       }
