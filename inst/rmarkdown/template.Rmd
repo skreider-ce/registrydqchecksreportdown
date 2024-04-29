@@ -95,10 +95,10 @@ cat(paste0("# ", datasetName, "  \n\n"))
         
         if(.noncriticalCheckId == "nc3") {
           .dsToPrint <- params$checkDataset$nonCriticalChecks[[datasetName]]$codebookChecks[[.noncriticalCheckId]]$listing |>
-            dplyr::select(varName, nMissing, nRows, pctMissing, acceptableMissingness, skipLogic)
+            dplyr::select(varName, nMissingThisMonth, nRowsThisMonth, pctMissingThisMonth, acceptableMissingness, skipLogic)
         } else if (.noncriticalCheckId == "nc4") {
           .dsToPrint <- params$checkDataset$nonCriticalChecks[[datasetName]]$codebookChecks[[.noncriticalCheckId]]$listing |>
-            dplyr::select(varName, nMissing, nRows, pctMissing, pctMissingComp, acceptableMissingness, skipLogic)
+            dplyr::select(varName, nMissingThisMonth, nRowsThisMonth, pctMissingThisMonth, pctMissingLastMonth, acceptableMissingness, skipLogic)
         } else {
           .dsToPrint <- params$checkDataset$nonCriticalChecks[[datasetName]]$codebookChecks[[.noncriticalCheckId]]$listing
         }
