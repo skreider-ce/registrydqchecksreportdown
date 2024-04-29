@@ -27,6 +27,16 @@ cat(paste0("**Data pull date:** ",params$checkDataset$runnerSummary$pullDate,"  
 
 ## Critical Check Summary
 
+cc1: Zero duplicates
+cc2: Added variables
+cc3: Removed variables
+cc4: Zero unlabeled variables
+cc5: Reasonable volume of new rows
+cc6: Reasonable volume of disappearing rows
+cc7: Item nonresponse for essential variables is not extreme
+cc8: MoM (month over month) change in item nonresponse is reasonable for essential variables
+cc9: Variables are of unexpected ‘type’
+
 ```{r echo = FALSE, results = "asis"}
 summaryToPrint <- params$checkDataset$checkSummary$criticalCheckSummary
 DT::datatable(summaryToPrint) |>
