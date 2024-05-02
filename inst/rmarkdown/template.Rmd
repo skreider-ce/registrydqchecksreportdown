@@ -181,9 +181,7 @@ cat(paste0("# ", datasetName, "  \n\n"))
                    ,"  \n"))
         cat("\n")
     
-        if(nrow(params$checkDataset$nonCriticalChecks[[datasetName]]$summaryStats[[.noncriticalCheckId]]$listing) > 0){
           print(knitr::kable(params$checkDataset$nonCriticalChecks[[datasetName]]$summaryStats[[.noncriticalCheckId]]$listing))
-        }
         cat("\n")
       }
 }
