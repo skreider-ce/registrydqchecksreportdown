@@ -1,13 +1,12 @@
 #' printCriticalCheck
 #'
-#' @param .criticalCheckId The id of the check to be printed (i.e. criticalCheck1 - criticalCheck8)
+#' @param .criticalCheckId The id of the check to be printed (i.e. criticalCheck1 - criticalCheck9)
 #' @param .criticalCheckResults The listing output to be printed
 #'
-#' @importFrom reactable reactable
-#' @importFrom rmarkdown paged_table
+#' @importFrom DT datatable
+#' @importFrom htmltools tagList
 printCriticalCheck <- function(.criticalCheckId, .criticalCheckResults){
-  # Create header and print critical checks to report
-  # cat(paste0("### ", .criticalCheckId, " - ", .criticalCheckResults$checkTitle , "  \n"))
+
   cat(paste0("### Results of Critical Check ", as.numeric(gsub("\\D", "", .criticalCheckId)), " - ", .criticalCheckResults$checkTitle , "  \n"))
   cat(paste0("Description: ", .criticalCheckResults$checkDescription, "  \n"))
   cat(paste0("Pass: ", .criticalCheckResults$pass, "  \n"))
@@ -17,28 +16,34 @@ printCriticalCheck <- function(.criticalCheckId, .criticalCheckResults){
     "criticalCheck1" = {
       cat(paste0("Number Failed: ", .criticalCheckResults$nDuplicateRows, "  \n"))
       if(.criticalCheckResults$nDuplicateRows > 0){
-        print(knitr::kable(.criticalCheckResults$listOfDuplicateRows))
+        print(htmltools::tagList(DT::datatable(as.data.frame(.criticalCheckResults$listOfDuplicateRows),options = list(dom = 'tp'))))
       }
       cat(paste0("  \n"))
     },
     "criticalCheck2" = {
-      cat(paste0("Number Failed: ", .criticalCheckResults$nOmittedVars, "  \n"))
-      if(.criticalCheckResults$nOmittedVars > 0){
-        print(knitr::kable(.criticalCheckResults$omittedVars, col.names = "Added Vars"))
+      cat(paste0("Number Failed: ", .criticalCheckResults$nExtraVars, "  \n"))
+      if(.criticalCheckResults$nExtraVars > 0){
+        print(htmltools::tagList(DT::datatable(as.data.frame(.criticalCheckResults$extraVars)
+                                               ,options = list(dom = 'tp')
+                                               ,colnames = c("Added Variables"))))
       }
       cat(paste0("  \n"))
     },
     "criticalCheck3" = {
-      cat(paste0("Number Failed: ", .criticalCheckResults$nExtraVars, "  \n"))
-      if(.criticalCheckResults$nExtraVars > 0){
-        print(knitr::kable(.criticalCheckResults$extraVars, col.names = "Removed Vars"))
+      cat(paste0("Number Failed: ", .criticalCheckResults$nOmittedVars, "  \n"))
+      if(.criticalCheckResults$nOmittedVars > 0){
+        print(htmltools::tagList(DT::datatable(as.data.frame(.criticalCheckResults$omittedVars)
+                                               ,options = list(dom = 'tp')
+                                               ,colnames = c("Removed Vars"))))
       }
       cat(paste0("  \n"))
     },
     "criticalCheck4" = {
       cat(paste0("Number Failed: ", .criticalCheckResults$nMissingVariableLabels, "  \n"))
       if(.criticalCheckResults$nMissingVariableLabels > 0){
-        print(knitr::kable(.criticalCheckResults$listOfVarsWithMissingLabels, col.names = "Vars wout Labels"))
+        print(htmltools::tagList(DT::datatable(as.data.frame(.criticalCheckResults$listOfVarsWithMissingLabels)
+                                               ,options = list(dom = 'tp')
+                                               ,colnames = c("Vars with Missing Labels"))))
       }
       cat(paste0("  \n"))
     },
@@ -53,14 +58,14 @@ printCriticalCheck <- function(.criticalCheckId, .criticalCheckResults){
       cat(paste0("Number of Removed Rows: ", .criticalCheckResults$nRemovedRows, "  \n"))
       cat(paste0("Comparison Threshold: ", .criticalCheckResults$threshold, "  \n"))
       if(nrow(.criticalCheckResults$inOldAndNotInNew) > 0){
-        print(knitr::kable(.criticalCheckResults$inOldAndNotInNew))
+        print(htmltools::tagList(DT::datatable(.criticalCheckResults$inOldAndNotInNew,options = list(dom = 'tp'))))
       }
       cat(paste0("  \n"))
     },
     "criticalCheck7" = {
       if(!is.null(.criticalCheckResults)){
         if(nrow(.criticalCheckResults$essentialVariablesMissingness) > 0){
-          print(knitr::kable(.criticalCheckResults$essentialVariablesMissingness))
+          print(htmltools::tagList(DT::datatable(.criticalCheckResults$essentialVariablesMissingness,options = list(dom = 'tp'))))
         }
       }
       cat(paste0("  \n"))
@@ -70,7 +75,7 @@ printCriticalCheck <- function(.criticalCheckId, .criticalCheckResults){
         if(nrow(.criticalCheckResults$essentialVariablesMissingness) > 0){
           .dsToPrint <- .criticalCheckResults$essentialVariablesMissingness |>
             dplyr::select(varName, nMissingThisMonth, nRowsThisMonth, pctMissingThisMonth, pctMissingLastMonth, acceptableMissingness, skipLogic)
-          print(knitr::kable(.dsToPrint))
+          print(htmltools::tagList(DT::datatable(.dsToPrint,options = list(dom = 'tp'))))
         }
       }
       cat(paste0("  \n"))
@@ -80,7 +85,7 @@ printCriticalCheck <- function(.criticalCheckId, .criticalCheckResults){
         cat(paste0("Number Failed: ", .criticalCheckResults$nVariablesUnexpectedType, "  \n"))
         if(nrow(.criticalCheckResults$listOfVarsWithUnexpectedType) > 0){
           .dsToPrint <- .criticalCheckResults$listOfVarsWithUnexpectedType
-          print(knitr::kable(.dsToPrint))
+          print(htmltools::tagList(DT::datatable(.dsToPrint,options = list(dom = 'tp'))))
         }
       }
       cat(paste0("  \n"))

@@ -13,6 +13,10 @@ params:
   checkDataset: NULL
 ---
 
+```{r, include = FALSE}
+htmltools::tagList(DT::datatable(cars))
+```
+
 # Runner Summary
 
 ```{r echo = FALSE, results = "asis"}
@@ -39,7 +43,7 @@ cat(paste0("**Data pull date:** ",params$checkDataset$runnerSummary$pullDate,"  
 
 ```{r echo = FALSE, results = "asis"}
 summaryToPrint <- params$checkDataset$checkSummary$criticalCheckSummary
-DT::datatable(summaryToPrint, options = list(dom = 't')) |>
+DT::datatable(summaryToPrint, options = list(dom = 'tp')) |>
   DT::formatStyle(
     names(summaryToPrint)
     ,backgroundColor = DT::styleEqual(c("Fail", "Pass"), c("#FF7F7F", "#D1FFBD"))
@@ -51,7 +55,7 @@ cat(paste0("  \n\n"))
 ## Noncritical Check Summary
 
 ```{r echo = FALSE, results = "asis"}
-DT::datatable(params$checkDataset$checkSummary$nonCriticalCheckSummary, options = list(dom = 't'))
+DT::datatable(params$checkDataset$checkSummary$nonCriticalCheckSummary, options = list(dom = 'tp'))
 
 cat(paste0("  \n\n"))
 
@@ -70,13 +74,13 @@ cat(paste0("# ", datasetName, "  \n\n"))
   
   .summaryToPrint <- params$checkDataset$checkSummary$criticalCheckSummary |>
     dplyr::filter(dataset == datasetName)
-  print(knitr::kable(.summaryToPrint))
+  print(htmltools::tagList(DT::datatable(.summaryToPrint,options = list(dom = 'tp'))))
 
   cat(paste0("  \n\n"))
   
   .summaryToPrint <- params$checkDataset$checkSummary$nonCriticalCheckSummary |>
     dplyr::filter(dataset == datasetName)
-  print(knitr::kable(.summaryToPrint))
+  print(htmltools::tagList(DT::datatable(.summaryToPrint,options = list(dom = 'tp'))))
 
   cat(paste0("  \n\n"))
   cat(paste0("******  \n"))
@@ -89,43 +93,46 @@ cat(paste0("# ", datasetName, "  \n\n"))
   cat(paste0("## Non-Critical Checks", "  \n\n"))
         cat("\n")
       for(.noncriticalCheckId in names(params$checkDataset$nonCriticalChecks[[datasetName]]$codebookChecks)){
+        
+        .currCheck <- params$checkDataset$nonCriticalChecks[[datasetName]]$codebookChecks[[.noncriticalCheckId]]
+        
         cat(paste0("******  \n"))
         
         cat("\n")
         
         if(.noncriticalCheckId == "nc3") {
-          .dsToPrint <- params$checkDataset$nonCriticalChecks[[datasetName]]$codebookChecks[[.noncriticalCheckId]]$listing |>
-            dplyr::select(varName, nMissingThisMonth, nRowsThisMonth, pctMissingThisMonth, acceptableMissingness, skipLogic)
+          .dsToPrint <- .currCheck$listing |>
+            dplyr::select(varName, nMissingThisMonth, nRowsThisMonth
+                          ,pctMissingThisMonth, acceptableMissingness, skipLogic)
         } else if (.noncriticalCheckId == "nc4") {
-          .dsToPrint <- params$checkDataset$nonCriticalChecks[[datasetName]]$codebookChecks[[.noncriticalCheckId]]$listing |>
-            dplyr::select(varName, nMissingThisMonth, nRowsThisMonth, pctMissingThisMonth, pctMissingLastMonth, acceptableMissingness, skipLogic)
+          .dsToPrint <- .currCheck$listing |>
+            dplyr::select(varName, nMissingThisMonth, nRowsThisMonth
+                          ,pctMissingThisMonth, pctMissingLastMonth
+                          ,acceptableMissingness, skipLogic)
         } else {
-          .dsToPrint <- params$checkDataset$nonCriticalChecks[[datasetName]]$codebookChecks[[.noncriticalCheckId]]$listing
+          .dsToPrint <- .currCheck$listing
         }
     
         cat(paste0("###  Results of Non-Critical Check "
                    ,as.numeric(gsub("\\D", "", .noncriticalCheckId))
                    ," ("
-                   ,params$checkDataset$nonCriticalChecks[[datasetName]]$codebookChecks[[.noncriticalCheckId]]$checkId
-                   ,") - ", params$checkDataset$nonCriticalChecks[[datasetName]]$codebookChecks[[.noncriticalCheckId]]$checkTitle
+                   ,.currCheck$checkId
+                   ,") - ", .currCheck$checkTitle
                    , "  \n"))
         cat(paste0("Description: "
-                   ,params$checkDataset$nonCriticalChecks[[datasetName]]$codebookChecks[[.noncriticalCheckId]]$checkDescription
+                   ,.currCheck$checkDescription
                    ,"  \n"))
         cat(paste0("Pass: "
-                   ,params$checkDataset$nonCriticalChecks[[datasetName]]$codebookChecks[[.noncriticalCheckId]]$pass
+                   ,.currCheck$pass
                    ,"  \n"))
         cat(paste0("Number Failed: "
-                   ,params$checkDataset$nonCriticalChecks[[datasetName]]$codebookChecks[[.noncriticalCheckId]]$values$n
+                   ,.currCheck$values$n
                    ,"  \n"))
         cat("\n")
 
-        if(!(params$checkDataset$nonCriticalChecks[[datasetName]]$codebookChecks[[.noncriticalCheckId]]$values$n %in% c(0, NULL))){
-          print(knitr::kable(head(.dsToPrint)))
+        if(!(.currCheck$values$n %in% c(0, NULL))){
+          print(htmltools::tagList(DT::datatable(.dsToPrint,options = list(dom = 'tp'))))
           
-          if(params$checkDataset$nonCriticalChecks[[datasetName]]$codebookChecks[[.noncriticalCheckId]]$values$n > 6){
-            cat(paste0("      *More than 6 observations - see listing output for full list of observations*  \n"))
-          }
         }
 
         cat("\n")
@@ -136,52 +143,55 @@ cat(paste0("# ", datasetName, "  \n\n"))
         
       cat("\n")
       for(.noncriticalCheckId in names(params$checkDataset$nonCriticalChecks[[datasetName]]$nPctList)){
+        
+        .currCheck <- params$checkDataset$nonCriticalChecks[[datasetName]]$nPctList[[.noncriticalCheckId]]
+        
         cat(paste0("******  \n"))
         
         cat("\n")
     
         cat(paste0("###  Results of Non-Critical Check "
                    ,as.numeric(gsub("\\D", "", .noncriticalCheckId))
-                   ," - ", params$checkDataset$nonCriticalChecks[[datasetName]]$nPctList[[.noncriticalCheckId]]$checkTitle
+                   ," - ", .currCheck$checkTitle
                    , "  \n"))
         cat(paste0("Description: "
-                   ,params$checkDataset$nonCriticalChecks[[datasetName]]$nPctList[[.noncriticalCheckId]]$checkDescription
+                   ,.currCheck$checkDescription
                    ,"  \n"))
         cat(paste0("Pass: "
-                   ,params$checkDataset$nonCriticalChecks[[datasetName]]$nPctList[[.noncriticalCheckId]]$pass
+                   ,.currCheck$pass
                    ,"  \n"))
         cat(paste0("Number Failed: "
-                   ,params$checkDataset$nonCriticalChecks[[datasetName]]$nPctList[[.noncriticalCheckId]]$values$n
+                   ,.currCheck$values$n
                    ,"  \n"))
         cat("\n")
     
-        if(params$checkDataset$nonCriticalChecks[[datasetName]]$nPctList[[.noncriticalCheckId]]$values$n > 0){
-          print(knitr::kable(head(params$checkDataset$nonCriticalChecks[[datasetName]]$nPctList[[.noncriticalCheckId]]$listing)))
-        }
+                if(!(.currCheck$values$n %in% c(0, NULL))){
+                  print(htmltools::tagList(DT::datatable(.currCheck$listing,options = list(dom = 'tp'))))
+                }
 
-        if(params$checkDataset$nonCriticalChecks[[datasetName]]$nPctList[[.noncriticalCheckId]]$values$n > 6){
-          cat(paste0("      *More than 6 observations - see listing output for full list of observations*  \n"))
-        }
         cat("\n")
       }
       
       
             cat("\n")
       for(.noncriticalCheckId in names(params$checkDataset$nonCriticalChecks[[datasetName]]$summaryStats)){
+        
+        .currCheck <- params$checkDataset$nonCriticalChecks[[datasetName]]$summaryStats[[.noncriticalCheckId]]
+        
         cat(paste0("******  \n"))
         
         cat("\n")
     
         cat(paste0("###  Results of Non-Critical Check "
                    ,as.numeric(gsub("\\D", "", .noncriticalCheckId))
-                   ," - ", params$checkDataset$nonCriticalChecks[[datasetName]]$summaryStats[[.noncriticalCheckId]]$checkTitle
+                   ," - ", .currCheck$checkTitle
                    , "  \n"))
         cat(paste0("Description: "
-                   ,params$checkDataset$nonCriticalChecks[[datasetName]]$summaryStats[[.noncriticalCheckId]]$checkDescription
+                   ,.currCheck$checkDescription
                    ,"  \n"))
         cat("\n")
     
-          print(knitr::kable(params$checkDataset$nonCriticalChecks[[datasetName]]$summaryStats[[.noncriticalCheckId]]$listing))
+          print(htmltools::tagList(DT::datatable(.currCheck$listing,options = list(dom = 'tp'))))
         cat("\n")
       }
 }
