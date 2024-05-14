@@ -7,7 +7,7 @@
 printCriticalCheck(.criticalCheckId, .criticalCheckResults)
 }
 \arguments{
-\item{.criticalCheckId}{The id of the check to be printed (i.e. criticalCheck1 - criticalCheck8)}
+\item{.criticalCheckId}{The id of the check to be printed (i.e. criticalCheck1 - criticalCheck9)}
 
 \item{.criticalCheckResults}{The listing output to be printed}
 }
