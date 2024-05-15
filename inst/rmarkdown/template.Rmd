@@ -63,6 +63,7 @@ cat(paste0("  \n\n"))
 
 ```{r echo = FALSE, results = "asis", include = TRUE}
 library(registrydqchecksreportdown)
+library(flextable)
 
 datasetNames <- names(params$checkDataset$criticalChecks)
 for(datasetName in datasetNames){
@@ -191,7 +192,8 @@ cat(paste0("# ", datasetName, "  \n\n"))
                    ,"  \n"))
         cat("\n")
     
-          print(htmltools::tagList(DT::datatable(.currCheck$listing,options = list(dom = 'tp'))))
+          print(htmltools::tagList(DT::datatable(.currCheck$listing
+                                                 ,options = list(dom = 'tp',pageLength = 1000))))
         cat("\n")
       }
 }
