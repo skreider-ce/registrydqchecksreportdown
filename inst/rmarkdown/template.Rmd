@@ -63,7 +63,6 @@ cat(paste0("  \n\n"))
 
 ```{r echo = FALSE, results = "asis", include = TRUE}
 library(registrydqchecksreportdown)
-library(flextable)
 
 datasetNames <- names(params$checkDataset$criticalChecks)
 for(datasetName in datasetNames){
