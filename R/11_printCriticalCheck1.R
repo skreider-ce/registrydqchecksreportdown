@@ -16,7 +16,9 @@ printCriticalCheck <- function(.criticalCheckId, .criticalCheckResults){
     "criticalCheck1" = {
       cat(paste0("Number Failed: ", .criticalCheckResults$nDuplicateRows, "  \n"))
       if(.criticalCheckResults$nDuplicateRows > 0){
-        print(htmltools::tagList(DT::datatable(as.data.frame(.criticalCheckResults$listOfDuplicateRows),options = list(dom = 'tp'))))
+        print(htmltools::tagList(DT::datatable(as.data.frame(.criticalCheckResults$listOfDuplicateRows)
+                                               ,options = list(dom = 'tp')
+                                               ,rownames = FALSE)))
       }
       cat(paste0("  \n"))
     },
@@ -25,6 +27,7 @@ printCriticalCheck <- function(.criticalCheckId, .criticalCheckResults){
       if(.criticalCheckResults$nExtraVars > 0){
         print(htmltools::tagList(DT::datatable(as.data.frame(.criticalCheckResults$extraVars)
                                                ,options = list(dom = 'tp')
+                                               ,rownames = FALSE
                                                ,colnames = c("Added Variables"))))
       }
       cat(paste0("  \n"))
@@ -34,6 +37,7 @@ printCriticalCheck <- function(.criticalCheckId, .criticalCheckResults){
       if(.criticalCheckResults$nOmittedVars > 0){
         print(htmltools::tagList(DT::datatable(as.data.frame(.criticalCheckResults$omittedVars)
                                                ,options = list(dom = 'tp')
+                                               ,rownames = FALSE
                                                ,colnames = c("Removed Vars"))))
       }
       cat(paste0("  \n"))
@@ -43,6 +47,7 @@ printCriticalCheck <- function(.criticalCheckId, .criticalCheckResults){
       if(.criticalCheckResults$nMissingVariableLabels > 0){
         print(htmltools::tagList(DT::datatable(as.data.frame(.criticalCheckResults$listOfVarsWithMissingLabels)
                                                ,options = list(dom = 'tp')
+                                               ,rownames = FALSE
                                                ,colnames = c("Vars with Missing Labels"))))
       }
       cat(paste0("  \n"))
@@ -58,14 +63,18 @@ printCriticalCheck <- function(.criticalCheckId, .criticalCheckResults){
       cat(paste0("Number of Removed Rows: ", .criticalCheckResults$nRemovedRows, "  \n"))
       cat(paste0("Comparison Threshold: ", .criticalCheckResults$threshold, "  \n"))
       if(nrow(.criticalCheckResults$inOldAndNotInNew) > 0){
-        print(htmltools::tagList(DT::datatable(.criticalCheckResults$inOldAndNotInNew,options = list(dom = 'tp'))))
+        print(htmltools::tagList(DT::datatable(.criticalCheckResults$inOldAndNotInNew
+                                               ,options = list(dom = 'tp')
+                                               ,rownames = FALSE)))
       }
       cat(paste0("  \n"))
     },
     "criticalCheck7" = {
       if(!is.null(.criticalCheckResults)){
         if(nrow(.criticalCheckResults$essentialVariablesMissingness) > 0){
-          print(htmltools::tagList(DT::datatable(.criticalCheckResults$essentialVariablesMissingness,options = list(dom = 'tp'))))
+          print(htmltools::tagList(DT::datatable(.criticalCheckResults$essentialVariablesMissingness
+                                                 ,options = list(dom = 'tp')
+                                                 ,rownames = FALSE)))
         }
       }
       cat(paste0("  \n"))
@@ -75,7 +84,9 @@ printCriticalCheck <- function(.criticalCheckId, .criticalCheckResults){
         if(nrow(.criticalCheckResults$essentialVariablesMissingness) > 0){
           .dsToPrint <- .criticalCheckResults$essentialVariablesMissingness |>
             dplyr::select(varName, nMissingThisMonth, nRowsThisMonth, pctMissingThisMonth, pctMissingLastMonth, acceptableMissingness, skipLogic)
-          print(htmltools::tagList(DT::datatable(.dsToPrint,options = list(dom = 'tp'))))
+          print(htmltools::tagList(DT::datatable(.dsToPrint
+                                                 ,options = list(dom = 'tp')
+                                                 ,rownames = FALSE)))
         }
       }
       cat(paste0("  \n"))
@@ -85,7 +96,9 @@ printCriticalCheck <- function(.criticalCheckId, .criticalCheckResults){
         cat(paste0("Number Failed: ", .criticalCheckResults$nVariablesUnexpectedType, "  \n"))
         if(nrow(.criticalCheckResults$listOfVarsWithUnexpectedType) > 0){
           .dsToPrint <- .criticalCheckResults$listOfVarsWithUnexpectedType
-          print(htmltools::tagList(DT::datatable(.dsToPrint,options = list(dom = 'tp'))))
+          print(htmltools::tagList(DT::datatable(.dsToPrint
+                                                 ,options = list(dom = 'tp')
+                                                 ,rownames = FALSE)))
         }
       }
       cat(paste0("  \n"))

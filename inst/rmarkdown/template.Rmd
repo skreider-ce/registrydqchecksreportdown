@@ -43,7 +43,9 @@ cat(paste0("**Data pull date:** ",params$checkDataset$runnerSummary$pullDate,"  
 
 ```{r echo = FALSE, results = "asis"}
 summaryToPrint <- params$checkDataset$checkSummary$criticalCheckSummary
-DT::datatable(summaryToPrint, options = list(dom = 'tp')) |>
+DT::datatable(summaryToPrint
+              ,options = list(dom = 'tp')
+              ,rownames = FALSE) |>
   DT::formatStyle(
     names(summaryToPrint)
     ,backgroundColor = DT::styleEqual(c("Fail", "Pass"), c("#FF7F7F", "#D1FFBD"))
@@ -55,7 +57,9 @@ cat(paste0("  \n\n"))
 ## Noncritical Check Summary
 
 ```{r echo = FALSE, results = "asis"}
-DT::datatable(params$checkDataset$checkSummary$nonCriticalCheckSummary, options = list(dom = 'tp'))
+DT::datatable(params$checkDataset$checkSummary$nonCriticalCheckSummary
+              ,options = list(dom = 'tp')
+              ,rownames = FALSE)
 
 cat(paste0("  \n\n"))
 
@@ -74,13 +78,17 @@ cat(paste0("# ", datasetName, "  \n\n"))
   
   .summaryToPrint <- params$checkDataset$checkSummary$criticalCheckSummary |>
     dplyr::filter(dataset == datasetName)
-  print(htmltools::tagList(DT::datatable(.summaryToPrint,options = list(dom = 'tp'))))
+  print(htmltools::tagList(DT::datatable(.summaryToPrint
+                                         ,options = list(dom = 'tp')
+                                         ,rownames = FALSE)))
 
   cat(paste0("  \n\n"))
   
   .summaryToPrint <- params$checkDataset$checkSummary$nonCriticalCheckSummary |>
     dplyr::filter(dataset == datasetName)
-  print(htmltools::tagList(DT::datatable(.summaryToPrint,options = list(dom = 'tp'))))
+  print(htmltools::tagList(DT::datatable(.summaryToPrint
+                                         ,options = list(dom = 'tp')
+                                         ,rownames = FALSE)))
 
   cat(paste0("  \n\n"))
   cat(paste0("******  \n"))
@@ -131,7 +139,9 @@ cat(paste0("# ", datasetName, "  \n\n"))
         cat("\n")
 
         if(!(.currCheck$values$n %in% c(0, NULL))){
-          print(htmltools::tagList(DT::datatable(.dsToPrint,options = list(dom = 'tp'))))
+          print(htmltools::tagList(DT::datatable(.dsToPrint
+                                                 ,options = list(dom = 'tp')
+                                                 ,rownames = FALSE)))
           
         }
 
@@ -166,7 +176,9 @@ cat(paste0("# ", datasetName, "  \n\n"))
         cat("\n")
     
                 if(!(.currCheck$values$n %in% c(0, NULL))){
-                  print(htmltools::tagList(DT::datatable(.currCheck$listing,options = list(dom = 'tp'))))
+                  print(htmltools::tagList(DT::datatable(.currCheck$listing
+                                                         ,options = list(dom = 'tp')
+                                                         ,rownames = FALSE)))
                 }
 
         cat("\n")
@@ -192,7 +204,8 @@ cat(paste0("# ", datasetName, "  \n\n"))
         cat("\n")
     
           print(htmltools::tagList(DT::datatable(.currCheck$listing
-                                                 ,options = list(dom = 'tp',pageLength = 1000))))
+                                                 ,options = list(dom = 'tp',pageLength = 1000)
+                                                 ,rownames = FALSE)))
         cat("\n")
       }
 }
