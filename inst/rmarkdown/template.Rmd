@@ -1,5 +1,4 @@
 ---
-title: "Data Quality Report"
 output:
   html_document:
     self_contained: true
@@ -16,6 +15,10 @@ params:
 ```{r, include = FALSE}
 htmltools::tagList(DT::datatable(cars))
 ```
+
+---
+title: `r glue::glue("{params$checkDataset$runnerSummary$registry} DQ Report {params$checkDataset$runnerSummary$timestamp}")`
+---
 
 # Runner Summary
 
@@ -74,6 +77,7 @@ cat(paste0("  \n\n"))
 cat(paste0("# ", datasetName, "  \n\n"))
 
   cat(paste0("## Summary", "  \n\n"))
+  cat(paste0("Critical Check Summary", "  \n\n"))
   cat(paste0("  \n\n"))
   
   .summaryToPrint <- params$checkDataset$checkSummary$criticalCheckSummary |>
@@ -82,6 +86,7 @@ cat(paste0("# ", datasetName, "  \n\n"))
                                          ,options = list(dom = 'tp')
                                          ,rownames = FALSE)))
 
+  cat(paste0("Non-Critical Check Summary", "  \n\n"))
   cat(paste0("  \n\n"))
   
   .summaryToPrint <- params$checkDataset$checkSummary$nonCriticalCheckSummary |>
@@ -152,61 +157,70 @@ cat(paste0("# ", datasetName, "  \n\n"))
         
         
       cat("\n")
-      for(.noncriticalCheckId in names(params$checkDataset$nonCriticalChecks[[datasetName]]$nPctList)){
+      if(length(params$checkDataset$nonCriticalChecks[[datasetName]]$nPctList) > 0){
+              for(.noncriticalCheckId in names(params$checkDataset$nonCriticalChecks[[datasetName]]$nPctList)){
         
-        .currCheck <- params$checkDataset$nonCriticalChecks[[datasetName]]$nPctList[[.noncriticalCheckId]]
+                .currCheck <- params$checkDataset$nonCriticalChecks[[datasetName]]$nPctList[[.noncriticalCheckId]]
+                
+                cat(paste0("******  \n"))
+                
+                cat("\n")
+            
+                cat(paste0("###  Results of Non-Critical Check "
+                           ,as.numeric(gsub("\\D", "", .noncriticalCheckId))
+                           ," - ", .currCheck$checkTitle
+                           , "  \n"))
+                cat(paste0("Description: "
+                           ,.currCheck$checkDescription
+                           ,"  \n"))
+                cat(paste0("Pass: "
+                           ,.currCheck$pass
+                           ,"  \n"))
+                cat(paste0("Number Failed: "
+                           ,.currCheck$values$n
+                           ,"  \n"))
+                cat("\n")
+            
+                        if(!(.currCheck$values$n %in% c(0, NULL))){
+                          print(htmltools::tagList(DT::datatable(head(.currCheck$listing, n = 500)
+                                                                 ,options = list(dom = 'tp')
+                                                                 ,rownames = FALSE)))
+                          if(.currCheck$values$n > 500){
+                            cat(paste0("WARNING: There are more than 500 observations - please check the Excel listing for the full list\n\n"))
+                          }
+                        }
         
-        cat(paste0("******  \n"))
-        
-        cat("\n")
-    
-        cat(paste0("###  Results of Non-Critical Check "
-                   ,as.numeric(gsub("\\D", "", .noncriticalCheckId))
-                   ," - ", .currCheck$checkTitle
-                   , "  \n"))
-        cat(paste0("Description: "
-                   ,.currCheck$checkDescription
-                   ,"  \n"))
-        cat(paste0("Pass: "
-                   ,.currCheck$pass
-                   ,"  \n"))
-        cat(paste0("Number Failed: "
-                   ,.currCheck$values$n
-                   ,"  \n"))
-        cat("\n")
-    
-                if(!(.currCheck$values$n %in% c(0, NULL))){
-                  print(htmltools::tagList(DT::datatable(.currCheck$listing
-                                                         ,options = list(dom = 'tp')
-                                                         ,rownames = FALSE)))
-                }
-
-        cat("\n")
+                cat("\n")
+              }
       }
+
       
       
             cat("\n")
-      for(.noncriticalCheckId in names(params$checkDataset$nonCriticalChecks[[datasetName]]$summaryStats)){
+      if(length(params$checkDataset$nonCriticalChecks[[datasetName]]$summaryStats) > 0){
+              for(.noncriticalCheckId in names(params$checkDataset$nonCriticalChecks[[datasetName]]$summaryStats)){
         
-        .currCheck <- params$checkDataset$nonCriticalChecks[[datasetName]]$summaryStats[[.noncriticalCheckId]]
-        
-        cat(paste0("******  \n"))
-        
-        cat("\n")
-    
-        cat(paste0("###  Results of Non-Critical Check "
-                   ,as.numeric(gsub("\\D", "", .noncriticalCheckId))
-                   ," - ", .currCheck$checkTitle
-                   , "  \n"))
-        cat(paste0("Description: "
-                   ,.currCheck$checkDescription
-                   ,"  \n"))
-        cat("\n")
-    
-          print(htmltools::tagList(DT::datatable(.currCheck$listing
-                                                 ,options = list(dom = 'tp',pageLength = 1000)
-                                                 ,rownames = FALSE)))
-        cat("\n")
+                .currCheck <- params$checkDataset$nonCriticalChecks[[datasetName]]$summaryStats[[.noncriticalCheckId]]
+                
+                cat(paste0("******  \n"))
+                
+                cat("\n")
+            
+                cat(paste0("###  Results of Non-Critical Check "
+                           ,as.numeric(gsub("\\D", "", .noncriticalCheckId))
+                           ," - ", .currCheck$checkTitle
+                           , "  \n"))
+                cat(paste0("Description: "
+                           ,.currCheck$checkDescription
+                           ,"  \n"))
+                cat("\n")
+            
+                  print(htmltools::tagList(DT::datatable(.currCheck$listing
+                                                         ,options = list(dom = 'tp',pageLength = 1000)
+                                                         ,rownames = FALSE)))
+                cat("\n")
+              }
       }
+
 }
 ```
