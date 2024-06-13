@@ -1,5 +1,4 @@
 ---
-title: "Data Quality Report"
 output:
   html_document:
     self_contained: true
@@ -16,6 +15,10 @@ params:
 ```{r, include = FALSE}
 htmltools::tagList(DT::datatable(cars))
 ```
+
+---
+title: `r glue::glue("{params$checkDataset$runnerSummary$registry} DQ Report {params$checkDataset$runnerSummary$timestamp}")`
+---
 
 # Runner Summary
 
