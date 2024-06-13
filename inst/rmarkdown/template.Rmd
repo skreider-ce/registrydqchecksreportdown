@@ -182,9 +182,12 @@ cat(paste0("# ", datasetName, "  \n\n"))
                 cat("\n")
             
                         if(!(.currCheck$values$n %in% c(0, NULL))){
-                          print(htmltools::tagList(DT::datatable(.currCheck$listing
+                          print(htmltools::tagList(DT::datatable(head(.currCheck$listing, n = 500)
                                                                  ,options = list(dom = 'tp')
                                                                  ,rownames = FALSE)))
+                          if(.currCheck$values$n > 500){
+                            cat(paste0("WARNING: There are more than 500 observations - please check the Excel listing for the full list\n\n"))
+                          }
                         }
         
                 cat("\n")
