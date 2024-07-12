@@ -43,6 +43,7 @@ cat(paste0("**Data pull date:** ",params$checkDataset$runnerSummary$pullDate,"  
 * cc7: Item nonresponse for essential variables is not extreme
 * cc8: MoM (month over month) change in item nonresponse is reasonable for essential variables
 * cc9: Variables are of expected ‘type’
+* cc10: Valid age at enrollment
 
 ```{r echo = FALSE, results = "asis"}
 summaryToPrint <- params$checkDataset$checkSummary$criticalCheckSummary
@@ -50,8 +51,12 @@ DT::datatable(summaryToPrint
               ,options = list(dom = 'tp')
               ,rownames = FALSE) |>
   DT::formatStyle(
-    names(summaryToPrint)
+    names(summaryToPrint)[!(names(summaryToPrint) %in% c("cc2", "cc3"))]
     ,backgroundColor = DT::styleEqual(c("Fail", "Pass"), c("#FF7F7F", "#D1FFBD"))
+  ) |>
+  DT::formatStyle(
+    names(summaryToPrint)[names(summaryToPrint) %in% c("cc2", "cc3")]
+    ,backgroundColor = DT::styleInterval(1, c("#D1FFBD", "#FDFD96"))
   )
 
 cat(paste0("  \n\n"))

@@ -102,6 +102,18 @@ printCriticalCheck <- function(.criticalCheckId, .criticalCheckResults){
         }
       }
       cat(paste0("  \n"))
+    },
+    "criticalCheck10" = {
+      if(!is.null(.criticalCheckResults)){
+        cat(paste0("Number Failed: ", .criticalCheckResults$values$n, "  \n"))
+        if(.criticalCheckResults$values$n > 0){
+          .dsToPrint <- .criticalCheckResults$listing
+          print(htmltools::tagList(DT::datatable(.dsToPrint
+                                                 ,options = list(dom = 'tp')
+                                                 ,rownames = FALSE)))
+        }
+      }
+      cat(paste0("  \n"))
     }
   )
 }
