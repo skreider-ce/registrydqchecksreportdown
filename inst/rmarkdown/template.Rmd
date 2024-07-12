@@ -43,6 +43,7 @@ cat(paste0("**Data pull date:** ",params$checkDataset$runnerSummary$pullDate,"  
 * cc7: Item nonresponse for essential variables is not extreme
 * cc8: MoM (month over month) change in item nonresponse is reasonable for essential variables
 * cc9: Variables are of expected ‘type’
+* cc10: Valid age at enrollment
 
 ```{r echo = FALSE, results = "asis"}
 summaryToPrint <- params$checkDataset$checkSummary$criticalCheckSummary
