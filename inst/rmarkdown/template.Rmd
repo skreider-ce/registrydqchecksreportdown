@@ -56,7 +56,7 @@ DT::datatable(summaryToPrint
   ) |>
   DT::formatStyle(
     names(summaryToPrint)[names(summaryToPrint) %in% c("cc2", "cc3")]
-    ,backgroundColor = DT::styleInterval(1, c("#D1FFBD", "#FDFD96"))
+    ,backgroundColor = DT::styleInterval(0, c("#D1FFBD", "#FDFD96"))
   )
 
 cat(paste0("  \n\n"))
